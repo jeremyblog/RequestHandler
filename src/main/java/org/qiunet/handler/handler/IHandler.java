@@ -3,6 +3,8 @@ package org.qiunet.handler.handler;
 import org.qiunet.handler.iodata.net.AbstractRequestData;
 
 /**
+ * 游戏的逻辑处理handler
+ * handler是单例实现, 不要在类里面做全局数据赋值等
  * @author qiunet
  *         Created on 17/3/3 11:56.
  */
@@ -12,7 +14,12 @@ public interface IHandler<RequestData extends AbstractRequestData> {
 	 * @return
 	 */
 	public int getRequestID();
-
+	/**
+	 * 设置id
+	 * @param requestid
+	 * @return
+	 */
+	public int setRequestID(int requestid);
 	/**
 	 * 是否是正式action. 如果false的话. 不允许生产环境调用action
 	 * @return

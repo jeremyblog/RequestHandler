@@ -1,9 +1,8 @@
-package netdata;
+package org.qiunet.handler.iodata;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.qiunet.handler.iodata.base.InputByteStream;
-import org.qiunet.handler.iodata.IoByteStreamFactory;
 import org.qiunet.handler.iodata.base.OutputByteStream;
 
 import java.io.ByteArrayInputStream;
