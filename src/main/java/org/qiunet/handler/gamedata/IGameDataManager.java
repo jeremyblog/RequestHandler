@@ -1,4 +1,4 @@
-package org.qiunet.handler.gamedata.base;
+package org.qiunet.handler.gamedata;
 
 /**
  * 游戏设定数据处理类实现接口

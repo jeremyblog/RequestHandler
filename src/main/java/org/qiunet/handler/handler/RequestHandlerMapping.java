@@ -2,6 +2,7 @@ package org.qiunet.handler.handler;
 
 import org.qiunet.utils.exceptions.SingletonException;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -42,7 +43,15 @@ public class RequestHandlerMapping {
 	 * @param handler
 	 */
 	public void addHandler(int requestId, IHandler handler) {
-		handler.setRequestID(requestId);
+		try {
+			Field field = handler.getClass().getDeclaredField("requestId");
+			field.setAccessible(true);
+			field.setInt(handler, requestId);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 		this.handlers.put(requestId, handler);
 	}
 

@@ -1,4 +1,4 @@
-package org.qiunet.handler.gamedata.base;
+package org.qiunet.handler.gamedata;
 
 import org.qiunet.utils.properties.LoaderProperties;
 

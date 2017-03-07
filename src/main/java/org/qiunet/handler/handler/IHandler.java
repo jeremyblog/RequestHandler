@@ -15,12 +15,6 @@ public interface IHandler<RequestData extends AbstractRequestData> {
 	 */
 	public int getRequestID();
 	/**
-	 * 设置id
-	 * @param requestid
-	 * @return
-	 */
-	public int setRequestID(int requestid);
-	/**
 	 * 是否是正式action. 如果false的话. 不允许生产环境调用action
 	 * @return
 	 */

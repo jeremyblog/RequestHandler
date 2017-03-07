@@ -1,12 +1,9 @@
 package org.qiunet.handler.annotation.support;
 
-import org.qiunet.handler.annotation.GameProperties;
 import org.qiunet.handler.annotation.RequestHandler;
-import org.qiunet.handler.gamedata.base.GameSettingManagers;
 import org.qiunet.handler.handler.IHandler;
 import org.qiunet.handler.handler.RequestHandlerMapping;
 import org.qiunet.utils.classScanner.IScannerHandler;
-import org.qiunet.utils.properties.LoaderProperties;
 
 import java.lang.reflect.Constructor;
 

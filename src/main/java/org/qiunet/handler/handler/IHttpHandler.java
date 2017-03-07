@@ -4,7 +4,7 @@ import org.qiunet.handler.iodata.net.AbstractRequestData;
 import org.qiunet.handler.iodata.net.AbstractResponseData;
 
 /**
- * 
+ * http的处理
  * @author qiunet
  *         Created on 17/3/3 12:01.
  */

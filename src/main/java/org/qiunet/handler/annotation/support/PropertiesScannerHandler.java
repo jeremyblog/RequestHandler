@@ -1,6 +1,6 @@
 package org.qiunet.handler.annotation.support;
 
-import org.qiunet.handler.gamedata.base.GameSettingManagers;
+import org.qiunet.handler.gamedata.GameSettingManagers;
 import org.qiunet.handler.annotation.GameProperties;
 import org.qiunet.utils.classScanner.IScannerHandler;
 import org.qiunet.utils.properties.LoaderProperties;

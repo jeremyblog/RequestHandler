@@ -9,4 +9,8 @@ import org.qiunet.handler.iodata.base.OutputByteStream;
  *         Created on 17/3/3 12:06.
  */
 public abstract class AbstractResponseData<HEADER extends IoData, COMMON extends IoData> extends BaseIoData<HEADER, COMMON>{
+
+	AbstractResponseData(HEADER header, COMMON common) {
+		super(header, common);
+	}
 }

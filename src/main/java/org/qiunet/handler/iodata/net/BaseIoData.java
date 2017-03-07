@@ -5,33 +5,17 @@ import org.qiunet.handler.iodata.base.OutputByteStream;
 import org.qiunet.utils.data.StringData;
 
 /**
+ *  作为responsedata 和 requestData的父类. 设置通用的方法. 但是不对外开放. 仅本目录可见
  * @author qiunet
  *         Created on 17/3/3 14:53.
  */
 abstract class BaseIoData<HEADER extends IoData, COMMON extends IoData>  implements IoData {
 	private HEADER header;
 	private COMMON common;
-	BaseIoData(){
-		try {
-			header = getHeaderClass().newInstance();
-			common = getCommonClass().newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
+	BaseIoData(HEADER header, COMMON common){
+		header = header;
+		common = common;
 	}
-	/**
-	 * 得到Header 的class
-	 * @return
-	 */
-	protected abstract Class<HEADER> getHeaderClass();
-	/**
-	 * 得到 Common 类的class
-	 * @return
-	 */
-	protected abstract Class<COMMON> getCommonClass();
-	
 	@Override
 	public void dataReader(InputByteStream in) throws Exception {
 		header.dataReader(in);
@@ -58,6 +42,21 @@ abstract class BaseIoData<HEADER extends IoData, COMMON extends IoData>  impleme
 	 * @throws Exception
 	 */
 	protected abstract void dataWriters(OutputByteStream out) throws Exception ;
+
+	/***
+	 * 得到header
+ 	 * @return
+	 */
+	public HEADER getHeader(){
+		return header;
+	}
+	/**
+	 * 得到common
+	 * @return
+	 */
+	public COMMON getCommon(){
+		return common;
+	}
 	/**
 	 *  toString
 	 * @return
