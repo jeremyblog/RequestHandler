@@ -1,5 +1,6 @@
 package org.qiunet.handler.handler;
 
+import org.qiunet.handler.enums.HandlerType;
 import org.qiunet.handler.iodata.net.AbstractRequestData;
 
 /**
@@ -9,6 +10,12 @@ import org.qiunet.handler.iodata.net.AbstractRequestData;
  *         Created on 17/3/3 11:56.
  */
 public interface IHandler<RequestData extends AbstractRequestData> {
+	/**
+	 * 得到handlerType
+	 * @see HandlerType
+	 * @return
+	 */
+	public HandlerType getHandlerType();
 	/**
 	 * 得到 RequestID
 	 * @return
