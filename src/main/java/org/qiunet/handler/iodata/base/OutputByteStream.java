@@ -47,6 +47,12 @@ public interface OutputByteStream {
 	 */
 	public void writeString(String desc, String string) throws Exception;
 	/**
+	 * 写入一个byte数组
+	 * @param bytes
+	 * @throws Exception
+	 */
+	public void writeBytes(byte [] bytes)throws Exception;
+	/**
 	 * 关闭
 	 */
 	public void close()throws Exception;

@@ -2,6 +2,8 @@ package org.qiunet.handler.iodata.base;
 
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
+
 /**
  * 一个外观类. 装饰IoByteStream使用
  * 顺便记录logger日志
@@ -87,6 +89,16 @@ public class InputByteDataStream implements InputByteStream {
 		}
 		return ret;
 	}
+
+	@Override
+	public byte[] readBytes(int length) throws Exception {
+		byte [] bytes = ioByteStream.readBytes(length);
+		if (logger.isDebugEnabled()) {
+			logger.info("readBytes :" + Arrays.toString(bytes));
+		}
+		return bytes;
+	}
+
 	@Override
 	public void close() throws Exception {
 		if (logger.isDebugEnabled()) logger.debug("calling close");

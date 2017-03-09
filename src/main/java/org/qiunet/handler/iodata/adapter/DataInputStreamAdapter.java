@@ -64,5 +64,12 @@ public class DataInputStreamAdapter implements InputByteStreamAdapter<DataInputS
 		public void close() throws Exception {
 			dis.close();
 		}
+
+		@Override
+		public byte[] readBytes(int length) throws Exception {
+			byte [] bytes = new byte[length];
+			dis.read(bytes);
+			return bytes;
+		}
 	}
 }

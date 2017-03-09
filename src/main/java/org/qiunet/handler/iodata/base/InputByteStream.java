@@ -50,6 +50,14 @@ public interface InputByteStream {
 	 * @return
 	 */
 	public String readString(String desc) throws Exception;
+
+	/**
+	 * 读取一定数量的byte
+	 * @param length 长度
+	 * @return byte 数组
+	 * @throws Exception
+	 */
+	public byte[] readBytes(int length)throws Exception;
 	/**
 	 * 关闭
 	 */

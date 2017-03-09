@@ -2,6 +2,8 @@ package org.qiunet.handler.iodata.base;
 
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
+
 /**
  * @author qiunet
  *         Created on 17/3/1 20:20.
@@ -78,6 +80,15 @@ public class OutputByteDataStream implements OutputByteStream {
 		}
 		outByteStream.writeString(desc, string);
 	}
+
+	@Override
+	public void writeBytes(byte[] bytes) throws Exception {
+		if (logger.isDebugEnabled()) {
+			logger.info("writeBytes: "+ Arrays.toString(bytes));
+		}
+		outByteStream.writeBytes(bytes);
+	}
+
 	@Override
 	public void close() throws Exception{
 		if (logger.isDebugEnabled()) logger.debug("calling close");

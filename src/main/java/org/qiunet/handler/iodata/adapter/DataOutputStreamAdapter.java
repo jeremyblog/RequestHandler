@@ -61,6 +61,11 @@ public class DataOutputStreamAdapter implements OutputByteStreamAdapter<DataOutp
 		}
 
 		@Override
+		public void writeBytes(byte[] bytes) throws Exception {
+			dos.write(bytes);
+		}
+
+		@Override
 		public void close() throws Exception{
 			dos.close();
 		}
