@@ -3,22 +3,25 @@ package org.qiunet.handler.iodata.adapter;
 import org.qiunet.handler.iodata.base.InputByteDataStream;
 import org.qiunet.handler.iodata.base.InputByteStream;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
 /**
  * @author qiunet
  *         Created on 17/3/1 20:15.
  */
-public class DataInputStreamAdapter implements InputByteStreamAdapter<DataInputStream> {
-	@Override
-	public InputByteStream getInputByteStream(DataInputStream byteData) {
-		return new InputByteDataStream(new ByteDataInputStream(byteData));
+public class InputByteStreamBuilder {
+	public static InputByteStream getInputByteStream(byte [] bytes) {
+		return new InputByteDataStream(new ByteDataInputStream(bytes));
 	}
-	
-	private class ByteDataInputStream implements InputByteStream{
+
+	private static class ByteDataInputStream implements InputByteStream{
+		private ByteArrayInputStream bis;
 		private DataInputStream dis;
-		ByteDataInputStream(DataInputStream dis) {
-			this.dis = dis;
+		
+		private ByteDataInputStream(byte [] bytes) {
+			this.bis = new ByteArrayInputStream(bytes);
+			this.dis = new DataInputStream(bis);
 		}
 		@Override
 		public byte readByte(String desc) throws Exception {
@@ -63,6 +66,7 @@ public class DataInputStreamAdapter implements InputByteStreamAdapter<DataInputS
 		@Override
 		public void close() throws Exception {
 			dis.close();
+			bis.close();
 		}
 
 		@Override

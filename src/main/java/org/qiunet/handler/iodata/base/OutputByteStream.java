@@ -52,6 +52,12 @@ public interface OutputByteStream {
 	 * @throws Exception
 	 */
 	public void writeBytes(byte [] bytes)throws Exception;
+
+	/**
+	 * 得到这个OutputByteStream 的byte数组
+	 * @throws Exception
+	 */
+	public byte [] getBytes()throws Exception;
 	/**
 	 * 关闭
 	 */

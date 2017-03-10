@@ -10,7 +10,8 @@ import org.qiunet.handler.iodata.base.OutputByteStream;
  */
 public abstract class AbstractResponseData<HEADER extends IoData, COMMON extends IoData> extends BaseIoData<HEADER, COMMON>{
 
-	AbstractResponseData(HEADER header, COMMON common) {
+	protected AbstractResponseData(HEADER header, COMMON common, short responseId) {
 		super(header, common);
+		getLeader().setCmdId(responseId);
 	}
 }

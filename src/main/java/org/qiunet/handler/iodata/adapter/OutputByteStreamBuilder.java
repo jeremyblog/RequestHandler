@@ -3,22 +3,25 @@ package org.qiunet.handler.iodata.adapter;
 import org.qiunet.handler.iodata.base.OutputByteDataStream;
 import org.qiunet.handler.iodata.base.OutputByteStream;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
 /**
  * @author qiunet
  *         Created on 17/3/1 20:37.
  */
-public class DataOutputStreamAdapter implements OutputByteStreamAdapter<DataOutputStream> {
-	@Override
-	public OutputByteStream getOutputByteStream(DataOutputStream dataOut) {
-		return new OutputByteDataStream(new ByteDataOutputStream(dataOut));
+public class OutputByteStreamBuilder {
+	
+	public static OutputByteStream getOutputByteStream() {
+		return new OutputByteDataStream(new ByteDataOutputStream());
 	}
 	
-	private class ByteDataOutputStream implements OutputByteStream {
+	private static class ByteDataOutputStream implements OutputByteStream {
+		private ByteArrayOutputStream baos;
 		private DataOutputStream dos;
-		ByteDataOutputStream (DataOutputStream dos) {
-			this.dos = dos;
+		private ByteDataOutputStream () {
+			this.baos = new ByteArrayOutputStream();
+			this.dos = new DataOutputStream(baos);
 		}
 		@Override
 		public void writeByte(String desc, byte val) throws Exception {
@@ -66,8 +69,14 @@ public class DataOutputStreamAdapter implements OutputByteStreamAdapter<DataOutp
 		}
 
 		@Override
+		public byte[] getBytes() throws Exception {
+			return baos.toByteArray();
+		}
+
+		@Override
 		public void close() throws Exception{
 			dos.close();
+			baos.close();
 		}
 	}
 }

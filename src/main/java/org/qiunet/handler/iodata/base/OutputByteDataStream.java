@@ -90,6 +90,11 @@ public class OutputByteDataStream implements OutputByteStream {
 	}
 
 	@Override
+	public byte[] getBytes() throws Exception {
+		return outByteStream.getBytes();
+	}
+
+	@Override
 	public void close() throws Exception{
 		if (logger.isDebugEnabled()) logger.debug("calling close");
 		outByteStream.close();

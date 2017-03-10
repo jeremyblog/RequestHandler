@@ -17,5 +17,5 @@ public @interface RequestHandler {
 	 * request Command Id
 	 * @return
 	 */
-	int ID();
+	short ID();
 }

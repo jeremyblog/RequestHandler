@@ -6,5 +6,6 @@ package org.qiunet.handler.iodata.constants;
  */
 public final class IoDataConstants {
 	private IoDataConstants(){}
-	
+	/**协议魔数*/
+	public static final byte [] magic = {'g','A','m','E'};
 }

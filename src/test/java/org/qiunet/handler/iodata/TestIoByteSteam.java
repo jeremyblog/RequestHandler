@@ -2,13 +2,10 @@ package org.qiunet.handler.iodata;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.qiunet.handler.iodata.adapter.InputByteStreamBuilder;
+import org.qiunet.handler.iodata.adapter.OutputByteStreamBuilder;
 import org.qiunet.handler.iodata.base.InputByteStream;
 import org.qiunet.handler.iodata.base.OutputByteStream;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 
 /**
  * @author qiunet
@@ -17,11 +14,7 @@ import java.io.DataOutputStream;
 public class TestIoByteSteam {
 	@Test
 	public void testIoByteStream(){
-		IoByteStreamFactory<DataInputStream, DataOutputStream> factory = IoByteStreamFactory.createDefault();
-		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-		DataOutputStream dos = new DataOutputStream(bos);
-		OutputByteStream obs = factory.getOutputByteStream(dos);
+		OutputByteStream obs = OutputByteStreamBuilder.getOutputByteStream();
 		boolean exception = false;
 		try {
 			obs.writeByte("byte", Byte.MAX_VALUE);
@@ -37,17 +30,19 @@ public class TestIoByteSteam {
 		}finally {
 			try {
 				obs.close();
-				bos.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		Assert.assertFalse(exception);
-		
-		ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-		DataInputStream dis = new DataInputStream(bis);
-		InputByteStream ibs = factory.getInputByteStream(dis);
-		
+
+		InputByteStream ibs = null;
+		try {
+			ibs = InputByteStreamBuilder.getInputByteStream(obs.getBytes());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		try {
 			byte val = ibs.readByte("byte");
 			Assert.assertTrue(Byte.MAX_VALUE == val);
