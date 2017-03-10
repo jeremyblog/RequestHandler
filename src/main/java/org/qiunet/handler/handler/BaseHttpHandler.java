@@ -10,14 +10,14 @@ import org.qiunet.handler.iodata.net.AbstractRequestData;
  */
 public abstract class BaseHttpHandler<RequestData extends AbstractRequestData> implements IHttpHandler<RequestData> {
 	/**使用反射赋值, 避免被随意的修改*/
-	private int requestId;
+	private short requestId;
 
 	@Override
 	public HandlerType getHandlerType() {
 		return HandlerType.HTTP;
 	}
 	@Override
-	public int getRequestID() {
+	public short getRequestID() {
 		return requestId;
 	}
 	@Override

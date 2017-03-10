@@ -8,9 +8,9 @@ import org.qiunet.handler.iodata.net.AbstractRequestData;
  *         Created on 17/3/7 10:43.
  */
 public abstract class BaseTcpUdpHandler<RequestData extends AbstractRequestData> implements ITcpUdpHandler<RequestData> {
-	private int requestId;
+	private short requestId;
 	@Override
-	public int getRequestID() {
+	public short getRequestID() {
 		return requestId;
 	}
 

@@ -14,7 +14,7 @@ import java.util.Map;
 public class RequestHandlerMapping {
 	private volatile static RequestHandlerMapping instance;
 	/**所有的 handler*/
-	private Map<Integer, IHandler> handlers = new HashMap<>();
+	private Map<Short, IHandler> handlers = new HashMap<>();
 
 	private RequestHandlerMapping() {
 		synchronized (RequestHandlerMapping.class) {
@@ -42,11 +42,11 @@ public class RequestHandlerMapping {
 	 * @param requestId
 	 * @param handler
 	 */
-	public void addHandler(int requestId, IHandler handler) {
+	public void addHandler(short requestId, IHandler handler) {
 		try {
 			Field field = handler.getClass().getDeclaredField("requestId");
 			field.setAccessible(true);
-			field.setInt(handler, requestId);
+			field.setShort(handler, requestId);
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
