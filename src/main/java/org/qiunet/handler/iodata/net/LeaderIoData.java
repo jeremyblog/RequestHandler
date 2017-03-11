@@ -1,8 +1,10 @@
 package org.qiunet.handler.iodata.net;
 
+import org.qiunet.handler.iodata.base.InputByteDataStream;
 import org.qiunet.handler.iodata.base.InputByteStream;
 import org.qiunet.handler.iodata.base.OutputByteStream;
 import org.qiunet.handler.iodata.constants.IoDataConstants;
+import org.qiunet.handler.log.ILogSwitch;
 
 /**
  * @author qiunet
@@ -24,20 +26,24 @@ public final class LeaderIoData implements IoData {
 	private int length;
 	@Override
 	public void dataReader(InputByteStream in) throws Exception {
+		((ILogSwitch)in).setPrintLog(false);
 		this.magic = in.readBytes(IoDataConstants.magic.length);
 		this.cmdId = in.readShort("cmdId");
 		this.split = in.readShort("split");
 		this.crc = in.readLong("crc");
 		this.length = in.readInt("length");
+		((InputByteDataStream)in).setPrintLog(true);
 	}
 
 	@Override
 	public void dataWriter(OutputByteStream out) throws Exception {
+		((ILogSwitch)out).setPrintLog(false);
 		out.writeBytes(IoDataConstants.magic);
 		out.writeShort("cmdId", cmdId);
 		out.writeShort("split", split);
 		out.writeLong("crc", crc);
 		out.writeInt("length", length);
+		((ILogSwitch)out).setPrintLog(true);
 	}
 	
 	

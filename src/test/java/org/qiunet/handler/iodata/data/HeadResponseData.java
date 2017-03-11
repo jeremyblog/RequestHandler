@@ -26,6 +26,7 @@ public class HeadResponseData implements IoData{
 
 	@Override
 	public void dataWriter(OutputByteStream out) throws Exception {
+		if (dt == 0) dt = System.currentTimeMillis();
 		out.writeLong("dt" , dt);
 	}
 }
