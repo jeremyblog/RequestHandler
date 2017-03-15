@@ -1,5 +1,6 @@
 package org.qiunet.handler.handler.intecepter;
 
+import org.qiunet.handler.context.IContext;
 import org.qiunet.handler.handler.IHandler;
 import org.qiunet.handler.handler.IHttpHandler;
 import org.qiunet.handler.handler.ITcpUdpHandler;
@@ -10,37 +11,40 @@ import org.qiunet.handler.iodata.net.AbstractRequestData;
  * @author qiunet
  *         Created on 17/3/7 11:33.
  */
-public abstract class AbstractIntercepter<LogicData> implements Intercepter<LogicData> {
+public abstract class AbstractIntercepter implements Intercepter {
 
-	@Override
-	public void postHandler(LogicData logicData) {
-		
-	}
-
-	@Override
-	public void throwCause(Exception e) {
-		
-	}
-
-	@Override
-	public void handler(IHandler handler, AbstractRequestData requestData, LogicData logicData) {
-		switch (handler.getHandlerType()){
-			case HTTP:
-				this.httpHandler((IHttpHandler) handler, requestData, logicData);
-				break;
-			case TCP_UDP:
-				this.tcpUdpHandler((ITcpUdpHandler) handler, requestData, logicData);
-				break;
-		}
-	}
+	
 
 	/**
 	 * http handler
 	 */
-	protected abstract void httpHandler(IHttpHandler handler, AbstractRequestData requestData, LogicData logicData);
+	protected abstract void httpHandler(IContext context);
 
 	/**
 	 * tcp udp handler
 	 */
-	protected abstract void tcpUdpHandler(ITcpUdpHandler handler, AbstractRequestData requestData, LogicData logicData);
+	protected abstract void tcpUdpHandler(IContext context);
+
+	@Override
+	public void preHandler(IContext context) {
+		
+	}
+
+	@Override
+	public void handler(IContext context) {
+		IHandler handler = context.getHandler();
+		switch (handler.getHandlerType()){
+			case HTTP:
+				this.httpHandler(context);
+				break;
+			case TCP_UDP:
+				this.tcpUdpHandler(context);
+				break;
+		}
+	}
+
+	@Override
+	public void postHandler(IContext context) {
+
+	}
 }

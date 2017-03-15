@@ -1,7 +1,10 @@
 package org.qiunet.handler.handler;
 
+import org.qiunet.handler.context.IContext;
 import org.qiunet.handler.enums.HandlerType;
 import org.qiunet.handler.iodata.net.AbstractRequestData;
+import org.qiunet.handler.iodata.net.AbstractResponseData;
+import org.qiunet.handler.response.IResponse;
 
 /**
  * @author qiunet
@@ -33,4 +36,30 @@ public abstract class BaseTcpUdpHandler<RequestData extends AbstractRequestData>
 	public boolean needSid() {
 		return true;
 	}
+
+	@Override
+	public void handler(IContext context) {
+		this.requestHandler(context.getRequestData(), new FacadeResponse(context));
+	}
+
+	/**
+	 * 处理tcp的请求
+	 * @param requestData
+	 * @param response
+	 */
+	protected abstract void requestHandler(AbstractRequestData requestData, IResponse response);
+
+	/***
+	 * 保护IContext  不让Handler 进行context处理
+	 */
+	private static class FacadeResponse implements IResponse{
+		private IResponse response;
+		private FacadeResponse (IResponse response) {
+			this.response = response;
+		}
+		@Override
+		public void response(AbstractResponseData responseData) {
+			this.response.response(responseData);
+		}
+	} 
 }

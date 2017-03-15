@@ -60,7 +60,7 @@ public class RequestHandlerMapping {
 	 * @param requestId
 	 * @return
 	 */
-	public IHandler getHandler(int requestId) {
+	public IHandler getHandler(short requestId) {
 		return handlers.get(requestId);
 	}
 }
