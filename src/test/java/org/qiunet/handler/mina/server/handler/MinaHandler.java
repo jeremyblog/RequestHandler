@@ -129,6 +129,7 @@ public class MinaHandler extends IoHandlerAdapter implements Runnable{
 		for (MinaSession session : sessionManager.values()) {
 			session.getIoSession().closeNow();
 		}
+		this.running = false;
 	}
 	/**
 	 * 当前在线的用户量

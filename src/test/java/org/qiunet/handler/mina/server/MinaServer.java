@@ -59,14 +59,14 @@ public class MinaServer {
 		} catch (IOException e) {
 			logger.error("start mina server error:", e);
 		}
-		logger.error("MinaServer started!");
+		logger.error("==========================MinaServer started!=============================");
 	}
 
 	/**
 	 * Mina 的暂停
 	 */
 	public void stop(){
-		logger.error("MinaServer stopped!");
+		logger.error("==========================MinaServer stoped!=============================");
 		if(acceptor!=null){
 			acceptor.unbind(address);
 			acceptor.getFilterChain().clear();
