@@ -18,7 +18,7 @@ public class LoginHandler extends BaseTcpUdpHandler<LoginRequestData> {
 	}
 	@Override
 	protected void requestHandler(LoginRequestData requestData, IResponse response) {
-		System.out.println(requestData);
+		logger.info(requestData);
 
 		LoginResponseData responseData = new LoginResponseData();
 		responseData.setUid(1000);

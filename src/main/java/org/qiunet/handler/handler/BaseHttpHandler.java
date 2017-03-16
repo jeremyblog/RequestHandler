@@ -1,5 +1,6 @@
 package org.qiunet.handler.handler;
 
+import org.apache.log4j.Logger;
 import org.qiunet.handler.enums.HandlerType;
 import org.qiunet.handler.iodata.net.AbstractRequestData;
 
@@ -9,6 +10,7 @@ import org.qiunet.handler.iodata.net.AbstractRequestData;
  *         Created on 17/3/6 20:57.
  */
 public abstract class BaseHttpHandler<RequestData extends AbstractRequestData> implements IHttpHandler<RequestData> {
+	protected Logger logger = Logger.getLogger(getClass());
 	/**使用反射赋值, 避免被随意的修改*/
 	private short requestId;
 

@@ -5,6 +5,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
+import org.qiunet.handler.iodata.entitys.LoginRequestData;
 import org.qiunet.handler.mina.server.handler.MinaHandler;
 import org.qiunet.handler.mina.server.protocols.MessageCodecFactory;
 
@@ -24,25 +25,24 @@ public class TestMinaServer {
 		minaServer.start();
 		
 		
-//		IoSession ioSession = socketConnect("127.0.0.1", (short) 10020);
-//		if (ioSession != null ) {
-//			LoginRequestData loginRequestData = new LoginRequestData();
-//			loginRequestData.getCommon().setUid(1000);
-//			loginRequestData.getLeader().setCmdId((short) 100);
-//
-//			loginRequestData.setOpenid("qiunet");
-//			loginRequestData.setSecret("qiuyang");
-//			loginRequestData.setToken("xiangyang");
-//
-//			ioSession.write(loginRequestData);
-//		}
-//		
-//		try {
-//			latch.await();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-		
+		IoSession ioSession = socketConnect("127.0.0.1", (short) 10020);
+		if (ioSession != null ) {
+			LoginRequestData loginRequestData = new LoginRequestData();
+			loginRequestData.getCommon().setUid(1000);
+			loginRequestData.getLeader().setCmdId((short) 100);
+
+			loginRequestData.setOpenid("qiunet");
+			loginRequestData.setSecret("qiuyang");
+			loginRequestData.setToken("xiangyang");
+
+			ioSession.write(loginRequestData);
+		}
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		minaServer.stop();
 	}
 

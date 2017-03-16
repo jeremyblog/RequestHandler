@@ -1,5 +1,6 @@
 package org.qiunet.handler.handler;
 
+import org.apache.log4j.Logger;
 import org.qiunet.handler.context.IContext;
 import org.qiunet.handler.enums.HandlerType;
 import org.qiunet.handler.iodata.net.AbstractRequestData;
@@ -11,6 +12,8 @@ import org.qiunet.handler.response.IResponse;
  *         Created on 17/3/7 10:43.
  */
 public abstract class BaseTcpUdpHandler<RequestData extends AbstractRequestData> implements ITcpUdpHandler<RequestData> {
+	protected Logger logger = Logger.getLogger(getClass());
+	
 	private short requestId;
 	@Override
 	public short getRequestID() {
