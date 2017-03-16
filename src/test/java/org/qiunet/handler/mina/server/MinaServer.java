@@ -1,4 +1,4 @@
-package org.qiunet.handler.mina;
+package org.qiunet.handler.mina.server;
 
 import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -6,8 +6,8 @@ import org.apache.mina.core.buffer.SimpleBufferAllocator;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.qiunet.handler.annotation.support.RequestScannerHandler;
-import org.qiunet.handler.mina.handler.MinaHandler;
-import org.qiunet.handler.mina.protocols.MessageCodecFactory;
+import org.qiunet.handler.mina.server.handler.MinaHandler;
+import org.qiunet.handler.mina.server.protocols.MessageCodecFactory;
 import org.qiunet.utils.classScanner.ScannerAllClassFile;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package org.qiunet.handler.mina.session;
+package org.qiunet.handler.mina.server.session;
 
 import org.apache.mina.core.session.IoSession;
 

@@ -1,6 +1,6 @@
-package org.qiunet.handler.mina.evnet;
+package org.qiunet.handler.mina.server.evnet;
 
-import org.qiunet.handler.mina.session.MinaSession;
+import org.qiunet.handler.mina.server.session.MinaSession;
 
 /**
  * @author qiunet

@@ -1,4 +1,4 @@
-package org.qiunet.handler.mina.protocols;
+package org.qiunet.handler.mina.server.protocols;
 
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;

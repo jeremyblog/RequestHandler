@@ -1,4 +1,4 @@
-package org.qiunet.handler.mina.handler;
+package org.qiunet.handler.mina.server.handler;
 
 import org.apache.log4j.Logger;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -8,11 +8,12 @@ import org.qiunet.handler.context.MinaContext;
 import org.qiunet.handler.handler.acceptor.Acceptor;
 import org.qiunet.handler.intercepter.HandlerIntercepter;
 import org.qiunet.handler.iodata.net.AbstractRequestData;
-import org.qiunet.handler.mina.evnet.ISessionEvent;
-import org.qiunet.handler.mina.session.DefaultSessionBuilder;
-import org.qiunet.handler.mina.session.ISessionBuilder;
-import org.qiunet.handler.mina.session.MinaSession;
+import org.qiunet.handler.mina.server.evnet.ISessionEvent;
+import org.qiunet.handler.mina.server.session.DefaultSessionBuilder;
+import org.qiunet.handler.mina.server.session.ISessionBuilder;
+import org.qiunet.handler.mina.server.session.MinaSession;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,7 +27,7 @@ public class MinaHandler extends IoHandlerAdapter implements Runnable{
 	/**检查线程 5秒一次*/
 	private static final int SLEEP_TIME=5000;
 	/**最大可空闲时间 10分钟*/
-	private static final int SESSION_IDLE_MAX_TIME = 10 * 1000;
+	private static final int SESSION_IDLE_MAX_TIME = 60 * 1000;
 	/**session 的管理 map*/
 	public final Map<Long, MinaSession> sessionManager = new ConcurrentHashMap<>();
 	/**可以修改的SessionBuilder */
@@ -145,11 +146,15 @@ public class MinaHandler extends IoHandlerAdapter implements Runnable{
 	public void run() {
 		while (running) {
 			logger.info("SessionSize:["+MinaHandler.getInstance().sessionSize()+"]  sended:["+sended.intValue()+"] received:["+received.intValue()+"] created:["+created.intValue()+"] closed:["+closed.intValue()+"]");
+
+			Iterator<Map.Entry<Long,MinaSession>> it = sessionManager.entrySet().iterator();
+			while(it.hasNext()){
+				MinaSession session = it.next().getValue();
+				if(System.currentTimeMillis() - session.getLastPackageDt() > SESSION_IDLE_MAX_TIME) {
 			
-			for (MinaSession session : sessionManager.values()) {
-				if (System.currentTimeMillis() - session.getLastPackageDt() > SESSION_IDLE_MAX_TIME) {
-					sessionManager.remove(session.getIoSession().getId());
+					it.remove();
 					session.getIoSession().closeNow();
+					
 				}
 			}
 			
