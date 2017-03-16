@@ -2,9 +2,12 @@ package org.qiunet.handler.handler;
 
 import org.qiunet.utils.exceptions.SingletonException;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 /**
  * 全局的RequestHandler 一个对应Mapping 类
  * 单例模式
@@ -44,17 +47,34 @@ public class RequestHandlerMapping {
 	 */
 	public void addHandler(short requestId, IHandler handler) {
 		try {
-			Field field = handler.getClass().getDeclaredField("requestId");
+			Field field = getRequestIdField(handler);
 			field.setAccessible(true);
 			field.setShort(handler, requestId);
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		this.handlers.put(requestId, handler);
 	}
 
+	/**
+	 * 找到 Handler 的requestId field
+	 * 
+	 * @param handler
+	 * @return
+	 */
+	private Field getRequestIdField(IHandler handler) {
+		Field field = null;
+		Class clazz = handler.getClass();
+		do {
+			try {
+				field = clazz.getDeclaredField("requestId");
+			} catch (NoSuchFieldException e) {
+				clazz = clazz.getSuperclass();
+			}
+			if (field != null) return field;
+		}while (clazz != Object.class);
+		return  null;
+	}
 	/**
 	 * 得到一个handler
 	 * @param requestId

@@ -1,5 +1,6 @@
 package org.qiunet.handler.mina.handler;
 
+import org.apache.log4j.Logger;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
@@ -14,19 +15,34 @@ import org.qiunet.handler.mina.session.MinaSession;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author qiunet
  *         Created on 17/3/7 18:28.
  */
-public class MinaHandler extends IoHandlerAdapter {
+public class MinaHandler extends IoHandlerAdapter implements Runnable{
+	private static final Logger logger = Logger.getLogger(MinaHandler.class);
+	/**检查线程 5秒一次*/
+	private static final int SLEEP_TIME=5000;
+	/**最大可空闲时间 10分钟*/
+	private static final int SESSION_IDLE_MAX_TIME = 10 * 1000;
+	/**session 的管理 map*/
 	public final Map<Long, MinaSession> sessionManager = new ConcurrentHashMap<>();
+	/**可以修改的SessionBuilder */
 	private ISessionBuilder sessionBuilder = new DefaultSessionBuilder();
+	/**实例*/
 	private volatile static MinaHandler instance;
+	/**自己实现的event*/
 	private ISessionEvent sessionEvent;
+	/**数据接收器*/
 	private Acceptor acceptor;
+	
 	private MinaHandler() {
 		acceptor = Acceptor.create(new HandlerIntercepter());
+		Thread thread = new Thread(this , "MinaHandler");
+		thread.setDaemon(true);
+		thread.start();
 		instance = this;
 	}
 
@@ -52,6 +68,7 @@ public class MinaHandler extends IoHandlerAdapter {
 	
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
+		created.incrementAndGet();
 		sessionManager.put(session.getId(), sessionBuilder.build(session));
 		if (needCallSessionEvent(session)) sessionEvent.sessionCreated(sessionManager.get(session.getId()));
 	}
@@ -59,6 +76,8 @@ public class MinaHandler extends IoHandlerAdapter {
 	@Override
 	public void sessionClosed(IoSession session) throws Exception {
 		if (needCallSessionEvent(session)) sessionEvent.sessionClosed(sessionManager.get(session.getId()));
+		sessionManager.remove(session.getId());
+		closed.incrementAndGet();
 		session.closeNow();
 	}
 
@@ -76,11 +95,13 @@ public class MinaHandler extends IoHandlerAdapter {
 
 	@Override
 	public void messageSent(IoSession session, Object message) throws Exception {
+		sended.incrementAndGet();
 		super.messageSent(session, message);
 	}
 
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
+		received.incrementAndGet();
 		acceptor.process(new MinaContext((AbstractRequestData) message, session));
 	}
 
@@ -98,5 +119,45 @@ public class MinaHandler extends IoHandlerAdapter {
 	 */
 	private boolean needCallSessionEvent(IoSession session){
 		return  sessionEvent != null && sessionManager.containsKey(session.getId());
+	}
+	/**
+	 * 停止
+	 */
+	public void stop(){
+		if (acceptor != null) acceptor.stop();
+		for (MinaSession session : sessionManager.values()) {
+			session.getIoSession().closeNow();
+		}
+	}
+	/**
+	 * 当前在线的用户量
+	 * @return
+	 */
+	public int sessionSize(){
+		return sessionManager.size();
+	}
+	private static AtomicInteger created = new AtomicInteger();
+	private static AtomicInteger sended = new AtomicInteger();
+	private static AtomicInteger received = new AtomicInteger();
+	private static AtomicInteger closed = new AtomicInteger();
+	private boolean running =true;
+	@Override
+	public void run() {
+		while (running) {
+			logger.info("SessionSize:["+MinaHandler.getInstance().sessionSize()+"]  sended:["+sended.intValue()+"] received:["+received.intValue()+"] created:["+created.intValue()+"] closed:["+closed.intValue()+"]");
+			
+			for (MinaSession session : sessionManager.values()) {
+				if (System.currentTimeMillis() - session.getLastPackageDt() > SESSION_IDLE_MAX_TIME) {
+					sessionManager.remove(session.getIoSession().getId());
+					session.getIoSession().closeNow();
+				}
+			}
+			
+			try {
+				Thread.sleep(SLEEP_TIME);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

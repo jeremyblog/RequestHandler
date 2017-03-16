@@ -39,7 +39,7 @@ public abstract class BaseTcpUdpHandler<RequestData extends AbstractRequestData>
 
 	@Override
 	public void handler(IContext context) {
-		this.requestHandler(context.getRequestData(), new FacadeResponse(context));
+		this.requestHandler((RequestData) context.getRequestData(), new FacadeResponse(context));
 	}
 
 	/**
@@ -47,7 +47,7 @@ public abstract class BaseTcpUdpHandler<RequestData extends AbstractRequestData>
 	 * @param requestData
 	 * @param response
 	 */
-	protected abstract void requestHandler(AbstractRequestData requestData, IResponse response);
+	protected abstract void requestHandler(RequestData requestData, IResponse response);
 
 	/***
 	 * 保护IContext  不让Handler 进行context处理

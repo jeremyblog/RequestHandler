@@ -40,5 +40,5 @@ public interface IHandler<RequestData extends AbstractRequestData> {
 	 * 得到requestData的class 先行解析
 	 * @return
 	 */
-	public Class<RequestData> getRequestDataClass();
+	public RequestData getRequestDataObj();
 }
