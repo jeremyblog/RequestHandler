@@ -28,4 +28,17 @@ public interface IContext extends QueueElement, IResponse {
 	 * @return
 	 */
 	public AbstractRequestData getRequestData();
+	/**
+	 * 得到对象
+	 * @param key
+	 * @return
+	 */
+	public Object getAttribute(String key);
+	/**
+	 * 得到对象
+	 * @param key
+	 * @return
+	 */
+	public void setAttribute(String key, Object val);
+
 }
